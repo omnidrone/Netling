@@ -3,9 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Netling.Core", "Netling.Core\Netling.Core.csproj", "{84CEEC3F-5FCF-4CA5-A6D7-F83CF7EA0B52}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netling.Client", "Netling.Client\Netling.Client.csproj", "{4F98A1F2-5AAB-44E9-8DBB-8EE865B97AF3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netling.Core", "Netling.Core\Netling.Core.csproj", "{84CEEC3F-5FCF-4CA5-A6D7-F83CF7EA0B52}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{92A6BD6A-20BA-4F92-8432-60A8853092C9}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,13 +12,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{92A6BD
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Netling.ConsoleClient", "Netling.ConsoleClient\Netling.ConsoleClient.csproj", "{170E12EF-4094-4B8B-93D3-4A399F81BE9D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netling.ConsoleClient", "Netling.ConsoleClient\Netling.ConsoleClient.csproj", "{170E12EF-4094-4B8B-93D3-4A399F81BE9D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Netling.Tests", "Netling.Tests\Netling.Tests.csproj", "{3EAFC61A-8664-4D9F-82F2-323DB8EA0F06}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netling.Tests", "Netling.Tests\Netling.Tests.csproj", "{3EAFC61A-8664-4D9F-82F2-323DB8EA0F06}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netling.Core.SocketWorker", "Netling.Core.SocketWorker\Netling.Core.SocketWorker.csproj", "{10E2F65D-8993-409A-ABE5-59CC2697CB32}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netling.Core.HttpClientWorker", "Netling.Core.HttpClientWorker\Netling.Core.HttpClientWorker.csproj", "{1098EAA8-0341-44E9-8FDE-D05A2A56E083}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picasso.Common", "..\picasso-server\Picasso.Common\Picasso.Common.csproj", "{3A4DD832-5D47-4FB1-99F7-8C9000F425B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Requests", "Game.Requests\Game.Requests.csproj", "{833FF6F0-751B-4957-9731-4A019C9E5DE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WithBuddies.Common", "..\with-buddies-server\WithBuddies.Common\WithBuddies.Common.csproj", "{7A9CE5ED-8204-45D6-ADA7-0E25E36376A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,10 +36,6 @@ Global
 		{84CEEC3F-5FCF-4CA5-A6D7-F83CF7EA0B52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{84CEEC3F-5FCF-4CA5-A6D7-F83CF7EA0B52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84CEEC3F-5FCF-4CA5-A6D7-F83CF7EA0B52}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4F98A1F2-5AAB-44E9-8DBB-8EE865B97AF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F98A1F2-5AAB-44E9-8DBB-8EE865B97AF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F98A1F2-5AAB-44E9-8DBB-8EE865B97AF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4F98A1F2-5AAB-44E9-8DBB-8EE865B97AF3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{170E12EF-4094-4B8B-93D3-4A399F81BE9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{170E12EF-4094-4B8B-93D3-4A399F81BE9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{170E12EF-4094-4B8B-93D3-4A399F81BE9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -52,6 +52,18 @@ Global
 		{1098EAA8-0341-44E9-8FDE-D05A2A56E083}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1098EAA8-0341-44E9-8FDE-D05A2A56E083}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1098EAA8-0341-44E9-8FDE-D05A2A56E083}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A4DD832-5D47-4FB1-99F7-8C9000F425B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A4DD832-5D47-4FB1-99F7-8C9000F425B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A4DD832-5D47-4FB1-99F7-8C9000F425B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A4DD832-5D47-4FB1-99F7-8C9000F425B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{833FF6F0-751B-4957-9731-4A019C9E5DE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{833FF6F0-751B-4957-9731-4A019C9E5DE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{833FF6F0-751B-4957-9731-4A019C9E5DE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{833FF6F0-751B-4957-9731-4A019C9E5DE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A9CE5ED-8204-45D6-ADA7-0E25E36376A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A9CE5ED-8204-45D6-ADA7-0E25E36376A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A9CE5ED-8204-45D6-ADA7-0E25E36376A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A9CE5ED-8204-45D6-ADA7-0E25E36376A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CommandLine.Options;
+using Game.Requests;
 using Netling.Core;
+using Netling.Core.HttpClientWorker;
 using Netling.Core.Models;
 using Netling.Core.SocketWorker;
 
@@ -30,14 +33,18 @@ namespace Netling.ConsoleClient
 
             var extraArgs = p.Parse(args);
             var url = extraArgs.FirstOrDefault(e => e.StartsWith("http://", StringComparison.OrdinalIgnoreCase) || e.StartsWith("https://", StringComparison.OrdinalIgnoreCase));
+
+            var requestSequence = new GameRequestSequence();
+                
             Uri uri = null;
 
             if (url != null && !Uri.TryCreate(url, UriKind.Absolute, out uri))
                 Console.WriteLine("Failed to parse URL");
-            else if (url != null && count.HasValue)
-                RunWithCount(uri, count.Value).Wait();
+                                
+            if (count.HasValue)
+                RunWithCount(uri, requestSequence, count.Value).Wait();
             else if (url != null)
-                RunWithDuration(uri, threads, TimeSpan.FromSeconds(duration)).Wait();
+                RunWithDuration(uri, requestSequence, threads, TimeSpan.FromSeconds(duration)).Wait();
             else
                 ShowHelp();
         }
@@ -47,22 +54,22 @@ namespace Netling.ConsoleClient
             Console.WriteLine(HelpString);
         }
 
-        private static Task RunWithCount(Uri uri, int count)
+        private static Task RunWithCount(Uri uri, IRequestSequence requestSequence, int count)
         {
             Console.WriteLine(StartRunWithCountString, count, uri);
-            return Run(uri, 1, TimeSpan.MaxValue, count);
+            return Run(uri, requestSequence, 1, TimeSpan.MaxValue, count);
         }
 
-        private static Task RunWithDuration(Uri uri, int threads, TimeSpan duration)
+        private static Task RunWithDuration(Uri uri, IRequestSequence requestSequence, int threads, TimeSpan duration)
         {
             Console.WriteLine(StartRunWithDurationString, duration.TotalSeconds, uri, threads);
-            return Run(uri, threads, duration, null);
+            return Run(uri, requestSequence, threads, duration, null);
         }
 
-        private static async Task Run(Uri uri, int threads, TimeSpan duration, int? count)
+        private static async Task Run(Uri uri, IRequestSequence requestSequence, int threads, TimeSpan duration, int? count)
         {
             WorkerResult result;
-            var worker = new Worker(new SocketWorkerJob(uri));
+            var worker = new Worker(new HttpClientWorkerJob(uri, requestSequence));
 
             if (count.HasValue)
                 result = await worker.Run(count.Value, new CancellationToken());
