@@ -1,100 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Netling.Core;
+using Netling.Core.Models;
+using Picasso.Common.Balancing;
+using Picasso.Common.Constants;
 using Picasso.Common.Game;
+using WithBuddies.ApiClient;
+using WithBuddies.Common;
 
-namespace Game.Requests
+namespace Netling.Game
 {
-    public class GameRequestSequence : IRequestSequence
+    public abstract class GameRequestSequence
     {
-        private readonly List<IGameRequest> _requests;
-        private int _idx = 0;
-        private Request _currentRequest;
+        private readonly int _index;
+        private readonly WorkerThreadResult _workerThreadResult;
+        private readonly string _baseAddress;
 
-        public GameRequestSequence()
+        protected GameRequestSequence(string baseAddress, int index, WorkerThreadResult workerThreadResult)
         {
-            _requests = CreateRequestSequence();    
-        }
-        private List<IGameRequest> CreateRequestSequence()
-        {
-            return new List<IGameRequest>
-            {
-                new CreateUser(),
-                new StartGame(),
-                new StopGame()
-            };
+            _baseAddress = baseAddress;
+            _index = index;
+            _workerThreadResult = workerThreadResult;
         }
 
-        public Request Next() {
-            if (_idx >= _requests.Count)
-                return null;
-            IGameRequest gameRequest = _requests[_idx];
-            _idx++;
-            Request req;
-            if (_currentRequest != null)
-            {
-                req = gameRequest.CreateRequest(_currentRequest.response);
-            }
-            else
-            {
-                req = gameRequest.CreateRequest(null);
-            }
-            _currentRequest = req;
-
-            return req;    
-        }
-
-        private class CreateUser : IGameRequest
+        public async Task StartSequence()
         {
-            public Request CreateRequest(byte[] previousResponse)
+            var client = await TrackedApiClient.NewGuestAsync(_index, _workerThreadResult, _baseAddress);
+
+            var gameStartResponse = await client.PostAsync<GameStartResponse>($"game/start", new GameStartRequest
             {
-                return new Request
+                Mode = ControlMode.Smart,
+                Goals = new List<GoalDto>
                 {
+                    new GoalDto
+                    {
+                        Name = "Destroy",
+                        Required = 10
+                    }
+                }
+            });
 
-                    url = "http://localhost:5470/users?BypassSignature=true",
-                    httpMethod = HttpMethod.Get
-                };
-            }
-        }
-
-        private class StartGame : IGameRequest
-        {
-            public Request CreateRequest(byte[] previousResponse)
+            var gameStopResponse = await client.PostAsync<EndGameResponse>($"game/stop", new GameEndRequest
             {
-                
-                WithBuddies.Common.UserLoginResponse userLoginResponse = ProtobufUtil.ObjectFromProtobuf<WithBuddies.Common.UserLoginResponse>(previousResponse);
-                string sessionToken = userLoginResponse.SecretKey;
-                return new Request
-                {
-                    //http://localhost:5470/game/start?BypassSignature=true&SessionToken=2ed1addd-691c-49c4-8205-c0021d64bf40
-                    url = $"http://localhost:5470/game/start?BypassSignature=true&SessionToken={sessionToken}",
-                    httpMethod = HttpMethod.Post
-                };
-            }
+                GameId = gameStartResponse.Data.GameId,
+                Level = 1
+            });
+
         }
 
-        private class StopGame : IGameRequest
-        {
-            public Request CreateRequest(byte[] previousResponse)
-            {
-                GameStartResponse gameStartResponse = ProtobufUtil.ObjectFromProtobuf<GameStartResponse>(previousResponse);
-
-                GameEndRequest gameEndRequest = new GameEndRequest
-                {
-                    GameId = gameStartResponse.GameId,
-                    Level = 0
-                };
-
-                return new Request
-                {
-                    //http://localhost:5470/game/start?BypassSignature=true&SessionToken=2ed1addd-691c-49c4-8205-c0021d64bf40
-
-                    url = "http://localhost:5470/game/stop",
-                    httpMethod = HttpMethod.Post,
-                    data = ProtobufUtil.ToProtobuf(gameEndRequest)
-                };
-            }
-        }
     }
 }

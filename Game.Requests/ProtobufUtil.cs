@@ -5,7 +5,7 @@ using ProtoBuf;
 using ProtoBuf.Meta;
 using AsyncPrimitives;
 
-namespace Game.Requests
+namespace Netling.Game
 {
     public class ProtobufUtil
     {

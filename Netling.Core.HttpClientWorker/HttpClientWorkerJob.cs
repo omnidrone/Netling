@@ -15,22 +15,19 @@ namespace Netling.Core.HttpClientWorker
         private readonly Stopwatch _localStopwatch;
         private readonly WorkerThreadResult _workerThreadResult;
         private readonly HttpClient _httpClient;
-        private readonly IRequestSequence _requestSequence;
 
         // Used to approximately calculate bandwidth
         private static readonly int MissingHeaderLength = "HTTP/1.1 200 OK\r\nContent-Length: 123\r\nContent-Type: text/plain\r\n\r\n".Length; 
 
-        public HttpClientWorkerJob(Uri uri, IRequestSequence requestSequence)
+        public HttpClientWorkerJob(Uri uri)
         {
             _uri = uri;
-            _requestSequence = requestSequence;
         }
 
-        private HttpClientWorkerJob(int index, Uri uri, IRequestSequence requestSequence, WorkerThreadResult workerThreadResult)
+        private HttpClientWorkerJob(int index, Uri uri, WorkerThreadResult workerThreadResult)
         {
             _index = index;
             _uri = uri;
-            _requestSequence = requestSequence;
             _stopwatch = new Stopwatch();
             _stopwatch.Start();
             _localStopwatch = new Stopwatch();
@@ -40,35 +37,21 @@ namespace Netling.Core.HttpClientWorker
 
         public async Task DoWork()
         {
-            var req = _requestSequence.Next();
-            while (req != null)
+            _localStopwatch.Restart();
+
+            using (var response = await _httpClient.GetAsync(_uri))
             {
-                Uri uri = null;
+                var content = await response.Content.ReadAsStreamAsync();
+                var length = content.Length + response.Headers.ToString().Length + MissingHeaderLength;
+                var responseTime = (float)_localStopwatch.ElapsedTicks / Stopwatch.Frequency * 1000;
 
-                if (!Uri.TryCreate(req.url, UriKind.Absolute, out uri))
-                    Console.WriteLine("Failed to parse URL");
-
-                _localStopwatch.Restart();
-
-                using (var response = await _httpClient.GetAsync(uri))
+                if ((int)response.StatusCode < 400)
                 {
-                    var content = await response.Content.ReadAsByteArrayAsync();//.Content.ReadAsStreamAsync();
-                    var length = content.Length + response.Headers.ToString().Length + MissingHeaderLength;
-                    var responseTime = (float)_localStopwatch.ElapsedTicks / Stopwatch.Frequency * 1000;
-
-                    if ((int)response.StatusCode < 400)
-                    {
-                        _workerThreadResult.Add((int)_stopwatch.ElapsedMilliseconds, length, responseTime, _index < 10);
-                        req.response = content;
-                        //string resp = Encoding.UTF8.GetString(req.response);
-                        req = _requestSequence.Next();
-                    }
-
-                    else
-                    {
-                        _workerThreadResult.AddError((int)_stopwatch.ElapsedMilliseconds, responseTime, _index < 10);
-                        req = null;
-                    }
+                    _workerThreadResult.Add((int)_stopwatch.ElapsedMilliseconds, length, responseTime, _index < 10);
+                }
+                else
+                {
+                    _workerThreadResult.AddError((int)_stopwatch.ElapsedMilliseconds, responseTime, _index < 10);
                 }
             }
         }
@@ -80,7 +63,7 @@ namespace Netling.Core.HttpClientWorker
 
         public Task<IWorkerJob> Init(int index, WorkerThreadResult workerThreadResult)
         {
-            return Task.FromResult<IWorkerJob>(new HttpClientWorkerJob(index, _uri, _requestSequence, workerThreadResult));
+            return Task.FromResult<IWorkerJob>(new HttpClientWorkerJob(index, _uri, workerThreadResult));
         }
     }
 }

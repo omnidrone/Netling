@@ -11,6 +11,6 @@
     <ProjectReference Include="..\Netling.Core.HttpClientWorker\Netling.Core.HttpClientWorker.csproj" />
     <ProjectReference Include="..\Netling.Core.SocketWorker\Netling.Core.SocketWorker.csproj" />
     <ProjectReference Include="..\Netling.Core\Netling.Core.csproj" />
-    <ProjectReference Include="..\Game.Requests\Game.Requests.csproj" />
+    <ProjectReference Include="..\Game.Requests\Netling.Game.csproj" />
   </ItemGroup>
 </Project>

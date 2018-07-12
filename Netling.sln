@@ -22,9 +22,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netling.Core.HttpClientWork
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picasso.Common", "..\picasso-server\Picasso.Common\Picasso.Common.csproj", "{3A4DD832-5D47-4FB1-99F7-8C9000F425B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game.Requests", "Game.Requests\Game.Requests.csproj", "{833FF6F0-751B-4957-9731-4A019C9E5DE5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Netling.Game", "Game.Requests\Netling.Game.csproj", "{833FF6F0-751B-4957-9731-4A019C9E5DE5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WithBuddies.Common", "..\with-buddies-server\WithBuddies.Common\WithBuddies.Common.csproj", "{7A9CE5ED-8204-45D6-ADA7-0E25E36376A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WithBuddies.ApiClient", "..\with-buddies-server\WithBuddies.ApiClient\WithBuddies.ApiClient.csproj", "{495A12AC-8248-4A6A-B5AB-B1454F727786}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProtobufSerializersGenerator", "..\with-buddies-server\ProtobufSerializersGenerator\ProtobufSerializersGenerator.csproj", "{38588D08-A7D4-4019-9F93-1CD5B00D9907}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,6 +68,14 @@ Global
 		{7A9CE5ED-8204-45D6-ADA7-0E25E36376A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A9CE5ED-8204-45D6-ADA7-0E25E36376A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A9CE5ED-8204-45D6-ADA7-0E25E36376A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{495A12AC-8248-4A6A-B5AB-B1454F727786}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{495A12AC-8248-4A6A-B5AB-B1454F727786}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{495A12AC-8248-4A6A-B5AB-B1454F727786}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{495A12AC-8248-4A6A-B5AB-B1454F727786}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38588D08-A7D4-4019-9F93-1CD5B00D9907}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38588D08-A7D4-4019-9F93-1CD5B00D9907}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38588D08-A7D4-4019-9F93-1CD5B00D9907}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38588D08-A7D4-4019-9F93-1CD5B00D9907}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

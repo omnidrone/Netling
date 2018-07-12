@@ -93,7 +93,7 @@ namespace Netling.Core
                 {
                     await job.DoWork();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     workerThreadResult.AddError((int)sw.ElapsedMilliseconds, 0, false);
                 }

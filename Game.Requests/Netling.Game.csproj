@@ -8,10 +8,15 @@
     <Compile Remove="Class1.cs" />
     <Compile Remove="IContentSerializer.cs" />
     <Compile Remove="RequestFactory.cs" />
+    <Compile Remove="ApiClientWorkerJob.cs" />
+    <Compile Remove="IGameRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Netling.Core\Netling.Core.csproj" />
     <ProjectReference Include="..\..\picasso-server\Picasso.Common\Picasso.Common.csproj" />
+    <ProjectReference Include="..\..\with-buddies-server\WithBuddies.ApiClient\WithBuddies.ApiClient.csproj" />
+    <ProjectReference Include="..\..\with-buddies-server\ProtobufSerializersGenerator\ProtobufSerializersGenerator.csproj" />
+    <ProjectReference Include="..\..\with-buddies-server\WithBuddies.Common\WithBuddies.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AsyncPrimitives" Version="1.8.0" />
