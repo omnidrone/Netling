@@ -17,9 +17,23 @@ namespace Netling.ConsoleClient
     {
         static void Main(string[] args)
         {
-            IRequestSequence requestSequence = new GameSessionSequence();
-            ConsoleClient consoleClient = new ConsoleClient(requestSequence, args);
-            consoleClient.Start();
+            ConsoleClient client = new ConsoleClient(new FakeRequestSequence(), args);
+            client.Start();
+
+        }
+
+    }
+
+    class FakeRequestSequence : IRequestSequence
+    {
+        public void Register(IHttpClient client)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task StartSequence()
+        {
+            throw new NotImplementedException();
         }
     }
 }

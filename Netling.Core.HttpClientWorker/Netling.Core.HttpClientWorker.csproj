@@ -8,7 +8,4 @@
     <ProjectReference Include="..\Netling.Core\Netling.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Remove="IHttpClient.cs" />
-  </ItemGroup>
 </Project>
